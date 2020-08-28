@@ -1,0 +1,793 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>最短路径 | Jonathenzc&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Zhang, Cheng">
+    
+    <meta name="description" content="最短路径
+除了遍历以外，对图最常见的操作就是求点到点的最短路径了。在日常生活中，这个问题也十分常见，比如我从宿舍出发，要去游泳馆，那么我得计划一条去游泳馆最近的路线，宿舍和游泳池可以看作图的节点，到游泳池的路上经过个个节点的路程长度看作是边的权值。在地图中，这个应用更为广泛，一个城市到其他城市的最短">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/jonathenzc.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/1.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/1.png">
+    
+    <!--<link href="/js/google-code-prettify/themes/tomorrow-night-bright.css" type="text/css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/zc.png" alt="Jonathenzc&#39;s Blog" title="Jonathenzc&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Jonathenzc&#39;s Blog">Jonathenzc&#39;s Blog</a></h1>
+				<h2 class="blog-motto">幸福洋溢每一天</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">目录</a></li>
+					
+
+					<!--实现high一下功能-->					
+                    <li> 
+                        <a title="把这个链接拖到你的Chrome收藏夹工具栏中" href='javascript:(function() {
+                        function c() {
+                            var e = document.createElement("link");
+                            e.setAttribute("type", "text/css");
+                            e.setAttribute("rel", "stylesheet");
+                            e.setAttribute("href", f);
+                            e.setAttribute("class", l);
+                            document.body.appendChild(e)
+                        }
+                     
+                        function h() {
+                            var e = document.getElementsByClassName(l);
+                            for (var t = 0; t < e.length; t++) {
+                                document.body.removeChild(e[t])
+                            }
+                        }
+                     
+                        function p() {
+                            var e = document.createElement("div");
+                            e.setAttribute("class", a);
+                            document.body.appendChild(e);
+                            setTimeout(function() {
+                                document.body.removeChild(e)
+                            }, 100)
+                        }
+                     
+                        function d(e) {
+                            return {
+                                height : e.offsetHeight,
+                                width : e.offsetWidth
+                            }
+                        }
+                     
+                        function v(i) {
+                            var s = d(i);
+                            return s.height > e && s.height < n && s.width > t && s.width < r
+                        }
+                     
+                        function m(e) {
+                            var t = e;
+                            var n = 0;
+                            while (!!t) {
+                                n += t.offsetTop;
+                                t = t.offsetParent
+                            }
+                            return n
+                        }
+                     
+                        function g() {
+                            var e = document.documentElement;
+                            if (!!window.innerWidth) {
+                                return window.innerHeight
+                            } else if (e && !isNaN(e.clientHeight)) {
+                                return e.clientHeight
+                            }
+                            return 0
+                        }
+                     
+                        function y() {
+                            if (window.pageYOffset) {
+                                return window.pageYOffset
+                            }
+                            return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+                        }
+                     
+                        function E(e) {
+                            var t = m(e);
+                            return t >= w && t <= b + w
+                        }
+                     
+                        function S() {
+                            var e = document.createElement("audio");
+                            e.setAttribute("class", l);
+                            e.src = i;
+                            e.loop = false;
+                            e.addEventListener("canplay", function() {
+                                setTimeout(function() {
+                                    x(k)
+                                }, 500);
+                                setTimeout(function() {
+                                    N();
+                                    p();
+                                    for (var e = 0; e < O.length; e++) {
+                                        T(O[e])
+                                    }
+                                }, 15500)
+                            }, true);
+                            e.addEventListener("ended", function() {
+                                N();
+                                h()
+                            }, true);
+                            e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+                            document.body.appendChild(e);
+                            e.play()
+                        }
+                     
+                        function x(e) {
+                            e.className += " " + s + " " + o
+                        }
+                     
+                        function T(e) {
+                            e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+                        }
+                     
+                        function N() {
+                            var e = document.getElementsByClassName(s);
+                            var t = new RegExp("\\b" + s + "\\b");
+                            for (var n = 0; n < e.length; ) {
+                                e[n].className = e[n].className.replace(t, "")
+                            }
+                        }
+                     
+                        var e = 30;
+                        var t = 30;
+                        var n = 350;
+                        var r = 350;
+                        var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+                        var s = "mw-harlem_shake_me";
+                        var o = "im_first";
+                        var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+                        var a = "mw-strobe_light";
+                        var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+                        var l = "mw_added_css";
+                        var b = g();
+                        var w = y();
+                        var C = document.getElementsByTagName("*");
+                        var k = null;
+                        for (var L = 0; L < C.length; L++) {
+                            var A = C[L];
+                            if (v(A)) {
+                                if (E(A)) {
+                                    k = A;
+                                    break
+                                }
+                            }
+                        }
+                        if (A === null) {
+                            console.warn("Could not find a node of the right size. Please try a different page.");
+                            return
+                        }
+                        c();
+                        S();
+                        var O = [];
+                        for (var L = 0; L < C.length; L++) {
+                            var A = C[L];
+                            if (v(A)) {
+                                O.push(A)
+                            }
+                        }
+                    })()    '>High一下</a> </li>
+					
+					<li>
+					
+	<div class="search">
+  <form action="//baidu.com/baidu" method="get" accept-charset="utf-8">
+    <input type="search" name="word" results="0" placeholder="搜索">
+    <input type="hidden" name="si" value="jonathenzc.github.io">
+    <input name=tn type=hidden value="bds">
+	<input name=cl type=hidden value="3">
+	<input name=ct type=hidden value="2097152">
+	<input name=s type=hidden value="on">
+  </form>
+</div>
+					
+					</li>
+
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/14/最短路径/" title="最短路径" itemprop="url">最短路径</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://jonathenzc.github.io" title="Zhang, Cheng">Zhang, Cheng</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-03-14T08:35:33.000Z" itemprop="datePublished">Mar 14 2015</time>
+    更新日期:<time datetime="2019-11-12T17:15:47.402Z" itemprop="dateModified">Nov 13 2019</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">最短路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dijkstra算法"><span class="toc-number">1.1.</span> <span class="toc-text">Dijkstra算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算法描述"><span class="toc-number">1.1.1.</span> <span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#伪代码"><span class="toc-number">1.1.2.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例"><span class="toc-number">1.1.3.</span> <span class="toc-text">举例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#讨论"><span class="toc-number">1.1.4.</span> <span class="toc-text">讨论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bellman-Ford算法"><span class="toc-number">1.2.</span> <span class="toc-text">Bellman-Ford算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算法描述-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#伪代码-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">举例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Floyd-Warshall算法"><span class="toc-number">1.3.</span> <span class="toc-text">Floyd-Warshall算法</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id><a href="#" class="headerlink" title></a>最短路径</h2><hr>
+<p>除了遍历以外，对图最常见的操作就是求点到点的最短路径了。在日常生活中，这个问题也十分常见，比如我从宿舍出发，要去游泳馆，那么我得计划一条去游泳馆最近的路线，宿舍和游泳池可以看作图的节点，到游泳池的路上经过个个节点的路程长度看作是边的权值。在地图中，这个应用更为广泛，一个城市到其他城市的最短距离。与此类似的还有各个城市之间的最短路径。</p>
+<p>由此我们可以将最短路径归纳成两类问题：单源最短路径(single source shortest path problem)和多源最短路径(all pairs shortest path problem)。它们都有成熟的算法，单元最短路径有Dijkstra算法和Bellman-Ford算法，而多源最短路径有Floyd-Warshall算法。</p>
+<h3 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h3><hr>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><hr>
+<p>Dijkstra算法的思想和Prim算法的思想很像，都是构建两个集合，一个集合用来存放已经找到从s出发的最短路径的节点集合，另一个是还没找到最短路径的节点集合。每次进行查找的时候都将还没有加到集合的节点添加进集合，并更新从源点到其他点的路径直到所有节点都被添加到集合中。</p>
+<p>它的证明可以通过反证法来证，简单点说就是如果我添加的节点不是最短的话，总能找到更短的，这与一开始的假设是矛盾的。</p>
+<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Dijkstra(source)</span><br><span class="line">Input: source <span class="comment">//源节点</span></span><br><span class="line">	<span class="keyword">bool</span> isFound[nodes];<span class="comment">//用bool数组作为找到的最短路径集合</span></span><br><span class="line">	<span class="keyword">double</span> distance[nodes];<span class="comment">//表示其他各点到源点的距离</span></span><br><span class="line">	<span class="keyword">for</span> each i in nodes <span class="comment">//遍历每个节点</span></span><br><span class="line">		<span class="comment">//Step1: 在未找到最短路径的集合中找出到源点最短距离的点</span></span><br><span class="line">		minVertex = getMin();</span><br><span class="line">		isFound[minVertex] = <span class="literal">true</span>;</span><br><span class="line">		<span class="comment">//Step2: 更新未加入集合的点到源点的最短距离</span></span><br><span class="line">		update distance；</span><br><span class="line">	End	</span><br><span class="line">End</span><br></pre></td></tr></table></figure>
+<p>可以看到Dijkstra的主要由两个操作来决定，一个是找到这个最短距离的点和边，另一个是更新记录最短距离的数组。我们可以通过下表来总结一下:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实现的数据结构</th>
+<th style="text-align:center">找最短距离的点和边(1)</th>
+<th style="text-align:center">更新最短距离的数组(2)</th>
+<th style="text-align:center">V*(1)+(V+E)*(2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">邻接矩阵</td>
+<td style="text-align:center">O(V)</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">O(V^2)</td>
+</tr>
+<tr>
+<td style="text-align:center">二叉堆</td>
+<td style="text-align:center">O(logV)</td>
+<td style="text-align:center">O(logV)</td>
+<td style="text-align:center">O((V+E)logV)</td>
+</tr>
+<tr>
+<td style="text-align:center">d堆</td>
+<td style="text-align:center">O( dlogV/logd )</td>
+<td style="text-align:center">O(logV/logd)</td>
+<td style="text-align:center">O( (dV+E)logV/logd )</td>
+</tr>
+<tr>
+<td style="text-align:center">斐波那契堆</td>
+<td style="text-align:center">O(logV)</td>
+<td style="text-align:center">O(1)(摊销)</td>
+<td style="text-align:center">O(VlogV+E)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><hr>
+<p><img src="/img/Dijkstra.png" class="img-shadow img-center"></p>
+<h4 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h4><hr>
+<p>就此我们已经讲完了Dijkstra算法，也知道了它的适用范围是每条边都为非负权值。那么这时候有人问了，如果我对每条边都加一个正数，使得边集里面没有复权边，这时候Dijkstra算法还能使用吗？这个问题要从等价问题来思考，如果给每条边都增加一个正数，看上去这是件公平的事，其实不然。对某些由多条边组成的路径来说，整个路径的权值不只增加了这个一个正数，而是几倍的正数，原来这条路径在权值上还有优势的，现在增加了几倍的正数，反而变为劣势了，所以这是件不等价的转化。那么非要进行等价转化，我觉得是每条边都乘以一个正数，这应该是等价的转化。</p>
+<h3 id="Bellman-Ford算法"><a href="#Bellman-Ford算法" class="headerlink" title="Bellman-Ford算法"></a>Bellman-Ford算法</h3><hr>
+<h4 id="算法描述-1"><a href="#算法描述-1" class="headerlink" title="算法描述"></a>算法描述</h4><hr>
+<p>Bellman-Ford算法的思想在于从源点逐步访问到其他节点来缩短到达目标节点的距离。</p>
+<p>关键在于需要构造一个记录最短路径的序列dist(k)[i]，表示从源点出发经过k个节点到达i的最短距离。每次在第k次迭代时，进行判断dist(k)[i]与dist(k-1)[j]+edge(j,i)，其中j=1…nodes。</p>
+<h4 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h4><hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Bellman-Ford(source)</span><br><span class="line">Input: source <span class="comment">//源点</span></span><br><span class="line">	distance[nodes];<span class="comment">//记录当前迭代下源点到其他节点i的最短距离</span></span><br><span class="line">	<span class="keyword">for</span> i in nodes.size: <span class="comment">//经过i个节点</span></span><br><span class="line">		<span class="keyword">for</span> e in edge: <span class="comment">//遍历每条边</span></span><br><span class="line">			start = e.start;</span><br><span class="line">			end = e.end;</span><br><span class="line">			<span class="keyword">if</span>(distance[end] &gt; distance[start]+edge)<span class="comment">//松弛计算</span></span><br><span class="line">				distance[end] = distance[start]+edge;</span><br><span class="line">		End</span><br><span class="line">	End</span><br><span class="line">	<span class="comment">//检查图中是否存在负环，只需要再进行次上面的计算，如果权值变小，则存在负环</span></span><br><span class="line">	<span class="keyword">for</span> e in edge: <span class="comment">//遍历每条边</span></span><br><span class="line">		start = e.start;</span><br><span class="line">		end = e.end;</span><br><span class="line">		<span class="keyword">if</span>(distance[end] &gt; distance[start]+edge)<span class="comment">//松弛计算</span></span><br><span class="line">			output(<span class="string">"存在负环！"</span>);</span><br><span class="line">	End</span><br><span class="line">End</span><br></pre></td></tr></table></figure>
+<p>需要经过V-1个节点，每次遍历E条边，所以复杂度是<code>O(EV)</code>。</p>
+<p>BellmanFord对负权边也是有效的，同时也能检测出负环的存在，如果负环存在，那么该图没有最短路径，因为总可以走一次负环使得求得的最短路径的代价更小。</p>
+<p>那么这里有个问题，BellmanFord是求单源最短路径，那么如果我在每个顶点都求次BF算法，是不是就等价于下面的Floyd-Warshall算法了呢？</p>
+<p>答案是不能，因为BellmanFord的算法复杂度是<code>O(VE)</code>，则对每个节点都求次BF算法的复杂度是<code>O(EV^2)</code>，与Floyd-Warshall算法的复杂度<code>O(V^3)</code>不同。</p>
+<h4 id="举例-1"><a href="#举例-1" class="headerlink" title="举例"></a>举例</h4><hr>
+<p><img src="/img/BellmanFord.png" class="img-shadow img-center"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">经过k个点</th>
+<th style="text-align:center">distk[2]</th>
+<th style="text-align:center">distk[3]</th>
+<th style="text-align:center">distk[4]</th>
+<th style="text-align:center">distk[5]</th>
+<th style="text-align:center">distk[6]</th>
+<th style="text-align:center">distk[7]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">∞</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">∞</td>
+<td style="text-align:center">∞</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><font color="#F00000">3</font></td>
+<td style="text-align:center"><font color="#F00000">5</font></td>
+<td style="text-align:center">5</td>
+<td style="text-align:center"><font color="#F00000">3</font></td>
+<td style="text-align:center"><font color="#F00000">4</font></td>
+<td style="text-align:center">∞</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center"><font color="#F00000">1</font></td>
+<td style="text-align:center"><font color="#F00000">2</font></td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><font color="#F00000">7</font></td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><font color="#F00000">0</font></td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><font color="#F00000">5</font></td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><font color="#F00000">3</font></td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+</tr>
+</tbody>
+</table>
+<p>它与Dijkstra算法的区别就在于：</p>
+<ol>
+<li>Dijkstra算法在求解的过程中，源点s到其他节点最短距离求出来就不会再改变了，每次更新的最短距离都是s到未加入集合的节点的最短距离。</li>
+<li>Bellman-Ford算法在每次迭代过程中，最短距离都是会更新的，因为需要计算如果加入这个点对最短路径的影响，所以只有当迭代全部结束时才能知道源点到其他各点的最短路径。</li>
+</ol>
+<h3 id="Floyd-Warshall算法"><a href="#Floyd-Warshall算法" class="headerlink" title="Floyd-Warshall算法"></a>Floyd-Warshall算法</h3><hr>
+<p>上面的两个算法都是针对单源的问题，Floyd算法是针对多源问题。代码看上去很直观，运用的思想是动态规划。针对一个中间点，如果源点到目标点的距离大于源点到中间点的距离加上中间点到目标点的距离，那么就更新距离。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Floyd-Warshall()</span><br><span class="line">	distance[nodes][nodes];<span class="comment">//记录各点之间的最短距离</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> middle=<span class="number">0</span>;middle&lt;nodes;middle++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> source=<span class="number">0</span>;source&lt;nodes;source++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> end=<span class="number">0</span>;end&lt;nodes;end++)</span><br><span class="line">				<span class="keyword">if</span>(distance[source][end]&gt;distance[source][middle]+distance[middle][end])</span><br><span class="line">					distance[source][end] = distance[source][middle]+distance[middle][end];</span><br><span class="line">			End</span><br><span class="line">		End</span><br><span class="line">	End</span><br><span class="line">	output distance;</span><br><span class="line">End</span><br></pre></td></tr></table></figure>
+<p>很直观这个方法的空间复杂度是O(V^2)，时间复杂度是O(V^3)，当然图中不能有负权边。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/算法/">算法</a><a href="/tags/brain-teaser/">brain teaser</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/【图论】/">【图论】</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  
+<div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a class="jiathis_button_renren">人人</a>
+    <a class="jiathis_button_evernote">EverNote</a>
+    <a href="http://www.jiathis.com/share?uid=1501277" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+</div>
+<script type="text/javascript" >
+    var jiathis_config={
+    data_track_clickback:true,
+    sm:"copy,renren,cqq",
+    pic:"",
+    summary:"",
+     ralateuid:{"tsina":"jonathenzc"},hideMore:false}
+    
+  </script> 
+<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=
+2010653" charset="utf-8"></script>      
+
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/03/16/社交网络中的中心性/" title="社交网络中的中心性">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  社交网络中的中心性</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/03/14/欧拉路径-欧拉环/"  title="欧拉路径&amp;欧拉环">
+ <strong>NEXT:</strong><br/> 
+ <span>欧拉路径&amp;欧拉环
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">最短路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dijkstra算法"><span class="toc-number">1.1.</span> <span class="toc-text">Dijkstra算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算法描述"><span class="toc-number">1.1.1.</span> <span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#伪代码"><span class="toc-number">1.1.2.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例"><span class="toc-number">1.1.3.</span> <span class="toc-text">举例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#讨论"><span class="toc-number">1.1.4.</span> <span class="toc-text">讨论</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bellman-Ford算法"><span class="toc-number">1.2.</span> <span class="toc-text">Bellman-Ford算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算法描述-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#伪代码-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">举例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Floyd-Warshall算法"><span class="toc-number">1.3.</span> <span class="toc-text">Floyd-Warshall算法</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">目录</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">44</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">34</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">7</span></li></ul>
+  </div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/【2k17】/" title="【2k17】">【2k17】<sup>4</sup></a></li>
+		
+			<li><a href="/categories/【Android】/" title="【Android】">【Android】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【C-】/" title="【C++】">【C++】<sup>5</sup></a></li>
+		
+			<li><a href="/categories/【Career】/" title="【Career】">【Career】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【Cmd】/" title="【Cmd】">【Cmd】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【Git】/" title="【Git】">【Git】<sup>8</sup></a></li>
+		
+			<li><a href="/categories/【Gradle】/" title="【Gradle】">【Gradle】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【Hexo】/" title="【Hexo】">【Hexo】<sup>16</sup></a></li>
+		
+			<li><a href="/categories/【HihoCoder】/" title="【HihoCoder】">【HihoCoder】<sup>6</sup></a></li>
+		
+			<li><a href="/categories/【Html】/" title="【Html】">【Html】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【Http】/" title="【Http】">【Http】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【IDEA】/" title="【IDEA】">【IDEA】<sup>6</sup></a></li>
+		
+			<li><a href="/categories/【Javascript】/" title="【Javascript】">【Javascript】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【Java】/" title="【Java】">【Java】<sup>7</sup></a></li>
+		
+			<li><a href="/categories/【Latex】/" title="【Latex】">【Latex】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【LeetCode】/" title="【LeetCode】">【LeetCode】<sup>248</sup></a></li>
+		
+			<li><a href="/categories/【Linux】/" title="【Linux】">【Linux】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【Mybatis】/" title="【Mybatis】">【Mybatis】<sup>3</sup></a></li>
+		
+			<li><a href="/categories/【Mysql】/" title="【Mysql】">【Mysql】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【Protobuf】/" title="【Protobuf】">【Protobuf】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【Python】/" title="【Python】">【Python】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【Spring-Boot】/" title="【Spring Boot】">【Spring Boot】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【VPN】/" title="【VPN】">【VPN】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【gradle】/" title="【gradle】">【gradle】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【highcharts】/" title="【highcharts】">【highcharts】<sup>3</sup></a></li>
+		
+			<li><a href="/categories/【jQuery】/" title="【jQuery】">【jQuery】<sup>8</sup></a></li>
+		
+			<li><a href="/categories/【java】/" title="【java】">【java】<sup>4</sup></a></li>
+		
+			<li><a href="/categories/【nginx】/" title="【nginx】">【nginx】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【postman】/" title="【postman】">【postman】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【win10】/" title="【win10】">【win10】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【动态规划】/" title="【动态规划】">【动态规划】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【图论】/" title="【图论】">【图论】<sup>4</sup></a></li>
+		
+			<li><a href="/categories/【小常识】/" title="【小常识】">【小常识】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【工欲善其事必先利其器】/" title="【工欲善其事必先利其器】">【工欲善其事必先利其器】<sup>3</sup></a></li>
+		
+			<li><a href="/categories/【数据结构】/" title="【数据结构】">【数据结构】<sup>2</sup></a></li>
+		
+			<li><a href="/categories/【文明6】/" title="【文明6】">【文明6】<sup>3</sup></a></li>
+		
+			<li><a href="/categories/【社交网络分析】/" title="【社交网络分析】">【社交网络分析】<sup>1</sup></a></li>
+		
+			<li><a href="/categories/【算法】/" title="【算法】">【算法】<sup>16</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/2k17/" title="2k17">2k17<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Array/" title="Array">Array<sup>62</sup></a></li>
+		
+			<li><a href="/tags/BackTracking/" title="BackTracking">BackTracking<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Backtracking/" title="Backtracking">Backtracking<sup>22</sup></a></li>
+		
+			<li><a href="/tags/Binary-Search/" title="Binary Search">Binary Search<sup>19</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>15</sup></a></li>
+		
+			<li><a href="/tags/Brainteaser/" title="Brainteaser">Brainteaser<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Breadth-first-Search/" title="Breadth-first Search">Breadth-first Search<sup>8</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C++">C++<sup>6</sup></a></li>
+		
+			<li><a href="/tags/Cmd/" title="Cmd">Cmd<sup>2</sup></a></li>
+		
+			<li><a href="/tags/CodeMirror/" title="CodeMirror">CodeMirror<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Contest/" title="Contest">Contest<sup>6</sup></a></li>
+		
+			<li><a href="/tags/Data-Structure/" title="Data Structure">Data Structure<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Depth-first-Search/" title="Depth-first Search">Depth-first Search<sup>16</sup></a></li>
+		
+			<li><a href="/tags/Design/" title="Design">Design<sup>6</sup></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/" title="Divide and Conquer">Divide and Conquer<sup>5</sup></a></li>
+		
+			<li><a href="/tags/Dynamic-Programming/" title="Dynamic Programming">Dynamic Programming<sup>35</sup></a></li>
+		
+			<li><a href="/tags/Git/" title="Git">Git<sup>8</sup></a></li>
+		
+			<li><a href="/tags/Gradle/" title="Gradle">Gradle<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/2k17/" style="font-size: 11.5px;">2k17</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Array/" style="font-size: 19.5px;">Array</a> <a href="/tags/BackTracking/" style="font-size: 10.5px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 17.5px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 17px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 15px;">Bit Manipulation</a> <a href="/tags/Brainteaser/" style="font-size: 10px;">Brainteaser</a> <a href="/tags/Breadth-first-Search/" style="font-size: 13px;">Breadth-first Search</a> <a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/Cmd/" style="font-size: 10.5px;">Cmd</a> <a href="/tags/CodeMirror/" style="font-size: 10px;">CodeMirror</a> <a href="/tags/Contest/" style="font-size: 12.5px;">Contest</a> <a href="/tags/Data-Structure/" style="font-size: 11.5px;">Data Structure</a> <a href="/tags/Depth-first-Search/" style="font-size: 15.5px;">Depth-first Search</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 12px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.5px;">Dynamic Programming</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Greedy/" style="font-size: 12px;">Greedy</a> <a href="/tags/Guava/" style="font-size: 10px;">Guava</a> <a href="/tags/Hash-Table/" style="font-size: 18px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12px;">Heap</a> <a href="/tags/Hexo/" style="font-size: 15.5px;">Hexo</a> <a href="/tags/HihoCoder/" style="font-size: 12.5px;">HihoCoder</a> <a href="/tags/Html/" style="font-size: 10px;">Html</a> <a href="/tags/Http/" style="font-size: 10px;">Http</a> <a href="/tags/IDEA/" style="font-size: 12.5px;">IDEA</a> <a href="/tags/Java/" style="font-size: 13px;">Java</a> <a href="/tags/Javascript/" style="font-size: 10.5px;">Javascript</a> <a href="/tags/Latex/" style="font-size: 10px;">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px;">LeetCode</a> <a href="/tags/Linked-List/" style="font-size: 17.5px;">Linked List</a> <a href="/tags/Linux/" style="font-size: 10.5px;">Linux</a> <a href="/tags/Math/" style="font-size: 19px;">Math</a> <a href="/tags/Mybatis/" style="font-size: 11px;">Mybatis</a> <a href="/tags/Mysql/" style="font-size: 10.5px;">Mysql</a> <a href="/tags/Protobuf/" style="font-size: 10px;">Protobuf</a> <a href="/tags/Python/" style="font-size: 11.5px;">Python</a> <a href="/tags/Reservoir-Sampling/" style="font-size: 10px;">Reservoir Sampling</a> <a href="/tags/SNA/" style="font-size: 10px;">SNA</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Sort/" style="font-size: 14.5px;">Sort</a> <a href="/tags/Spring-Boot/" style="font-size: 10.5px;">Spring Boot</a> <a href="/tags/Spring-boot/" style="font-size: 10px;">Spring boot</a> <a href="/tags/Spring-mvc/" style="font-size: 10px;">Spring mvc</a> <a href="/tags/Stack/" style="font-size: 16px;">Stack</a> <a href="/tags/String/" style="font-size: 18.5px;">String</a> <a href="/tags/Tomcat/" style="font-size: 10px;">Tomcat</a> <a href="/tags/Tree/" style="font-size: 18px;">Tree</a> <a href="/tags/Trees/" style="font-size: 10px;">Trees</a> <a href="/tags/Trie/" style="font-size: 11px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 17.5px;">Two Pointers</a> <a href="/tags/Union-Find/" style="font-size: 10.5px;">Union Find</a> <a href="/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/tags/VS-Code/" style="font-size: 10.5px;">VS Code</a> <a href="/tags/VS2013/" style="font-size: 10.5px;">VS2013</a> <a href="/tags/brain-teaser/" style="font-size: 14px;">brain teaser</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/dynamic-programming/" style="font-size: 10px;">dynamic programming</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/gradle/" style="font-size: 10.5px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/highcharts/" style="font-size: 11px;">highcharts</a> <a href="/tags/jQuery/" style="font-size: 13.5px;">jQuery</a> <a href="/tags/java/" style="font-size: 11.5px;">java</a> <a href="/tags/javascript/" style="font-size: 10.5px;">javascript</a> <a href="/tags/list/" style="font-size: 10px;">list</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/postman/" style="font-size: 10px;">postman</a> <a href="/tags/version/" style="font-size: 10px;">version</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a> <a href="/tags/字符串处理/" style="font-size: 10px;">字符串处理</a> <a href="/tags/小常识/" style="font-size: 10px;">小常识</a> <a href="/tags/徽章/" style="font-size: 11.5px;">徽章</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/数据结构/" style="font-size: 10.5px;">数据结构</a> <a href="/tags/文明6/" style="font-size: 11px;">文明6</a> <a href="/tags/树/" style="font-size: 10px;">树</a> <a href="/tags/深度优先搜索/" style="font-size: 10px;">深度优先搜索</a> <a href="/tags/算法/" style="font-size: 16.5px;">算法</a> <a href="/tags/算法，brain-teaser/" style="font-size: 10.5px;">算法，brain teaser</a>
+    </div>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+	  <li><a href="http://xiaoningliu.com" title="LiuXiaoning's Blog">刘晓宁's Blog</a></li>
+	  <li><a href="http://shensitong.github.io/" title="TongShensi's Blog">TongShensi</a></li>
+	  <li><a href="http://imcyz.me/" title="XueBa's Blog">学霸's Blog</a></li>
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=5536478083&verifier=374e49cb&dpc=1"></iframe>
+
+</aside>
+</div>
+    </div>
+    <footer><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> I&#39;m Zhang, Cheng, a graduate student in SJTU. <br/>
+			I&#39;d love to share with you something about Programming and CS. <br/>
+			Now I&#39;m a backend engineer in infrustructure group of Pinduoduo. </p>
+	</section>
+	
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/jonathenzc" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/jonathenzc" target="_blank" title="github"></a>
+		
+		
+		
+        <a href="https://www.linkedin.com/in/%E7%A8%8B-%E5%BC%A0-59074411a/" target="_blank" title="linkedin"></a>
+        
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2020 
+		
+		<a href="http://jonathenzc.github.io" target="_blank" title="Zhang, Cheng">Zhang, Cheng</a>
+		
+		</p>
+		<p class="copyright">
+			People: <span id="busuanzi_value_site_uv"></span> |
+			Views: <span id="busuanzi_value_site_pv"></span> |
+			Page: <span id="busuanzi_value_page_pv"></span>
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/ToTop.png"/></a>
+</div>
+<script src="/js/ToTop.js"></script>
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?c2359b68d9e8d3f3d74954a64f794915";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!--<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+   $("pre").addClass("prettyprint");
+   $("pre").addClass("linenums");
+   $("pre").addClass("lang-html");
+   $("pre").addClass("prettyprinted");
+   prettyPrint();    
+</script>-->
+  </body>
+</html>
